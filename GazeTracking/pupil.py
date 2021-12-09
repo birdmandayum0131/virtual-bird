@@ -21,9 +21,10 @@ class Pupil(object):
 
     @property
     def gaze(self):
-        if self.iris is None:
+        iris = self.iris
+        if iris is None:
             return "(0.0,0.0)"
-        x, y = self.iris
+        x, y = iris
         x1, y1, x2, y2 = self._tlbr
         x_align = (x - x1)/(x2 - x1)*2 - 1
         y_align = (y - y1)/(y2 - y1)*2 - 1
