@@ -1,13 +1,9 @@
 import socket
 import threading
+from .Abstract import FaceDataTransportHandler
 
 
-class FaceDataTransportInterface:
-    def transportFaceData(self, dataDict: dict):
-        raise NotImplementedError("Method:transportFaceData not implemented!")
-
-
-class TcpSender(FaceDataTransportInterface, object):
+class TcpServer(FaceDataTransportHandler, object):
     def __init__(self, host, port):
         self.serverHost = host
         self.serverPort = port
@@ -31,7 +27,7 @@ class TcpSender(FaceDataTransportInterface, object):
             listenThread.daemon = True
             listenThread.start()
         else:
-            print("TCP Sender is already listen for connect")
+            print("TCP Server is already listen for connect")
             return
 
     def _waiting4connect(self):
