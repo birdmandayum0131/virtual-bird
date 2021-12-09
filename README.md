@@ -2,7 +2,8 @@
   A repository for studying virtual characters technique  
   Can not yet be made use of for smoothly real-time application now
 ## About The Project
-  This project aims to apply different face/body alignment algorithm on virtual character synchronizing.  ~~(and promote my coding level)~~.
+  This project aims to apply different face/body alignment algorithm on virtual character synchronizing.  
+  ~~(and promote my coding level)~~
 ## Done List
 - Algorithm
   - Landmarks Detection
