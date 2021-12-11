@@ -1,8 +1,8 @@
 import face_alignment
-from ..Abstract import GazeDetector
+from ..Abstract import FaceDetector, LandmarksDetector
 
 
-class Adrian_Gaze(GazeDetector):
+class Adrian_Face(FaceDetector, LandmarksDetector):
     def __init__(self):
         self.face_alignment = face_alignment.FaceAlignment(
             face_alignment.LandmarksType._2D, flip_input=False)
@@ -12,5 +12,7 @@ class Adrian_Gaze(GazeDetector):
         return self.face_alignment.face_detector.detect_from_image(image_RGB)
 
     # Overrided
-    def detect_landmarks_from_faces(self, face_image, detected_faces):
-        return self.face_alignment.get_landmarks_from_image(face_image, detected_faces=detected_faces)
+    def detect_landmarks_from_face(self, face_image, detected_face):
+        landmarks = self.face_alignment.get_landmarks_from_image(
+            face_image, detected_faces=[detected_face])
+        return landmarks[0]

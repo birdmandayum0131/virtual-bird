@@ -1,29 +1,39 @@
 import cv2
-from virtual_bird.GazeTracking import GazeTracker
+import time
+from virtual_bird.FaceTracking import FaceTracker
 from virtual_bird.TcpServer import TcpServer
-from virtual_bird.Models.adrian_gaze import Adrian_Gaze
+from virtual_bird.Models.Adrian_Face import Adrian_Face
 
 
 def main():
-    gazeDetector = Adrian_Gaze()
-    gazeTracker = GazeTracker(cv2.VideoCapture(0), gazeDetector)
-    gazeTracker.start()
+    show_landmarks = False
+    adrian_Face = Adrian_Face()
+    faceTracker = FaceTracker(cv2.VideoCapture(0), adrian_Face, adrian_Face)
+    faceTracker.start()
     unitySender = TcpServer(host="127.0.0.1", port=1208)
     unitySender.startUpListen()
     while True:
-        frame = gazeTracker.frame
-        landmarks = gazeTracker.landmarks
-        if landmarks is not None:
-            if gazeTracker.gaze is not None:
-                unitySender.transportFaceData(gazeTracker.gaze)
-            for mark in landmarks:
-                cv2.circle(frame, (int(mark[0]), int(mark[1])),
-                           1, (255, 255, 255), -1, cv2.LINE_AA)
-            cv2.imshow('frame', frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            gazeTracker.is_stop = True
+        frame = faceTracker.frame
+        if frame is None:
+            time.sleep(0.5)
+            continue
+        face_list = faceTracker.get_current_face_list()
+        if len(face_list) > 0:
+            first_face = face_list[0]
+            dets_dict = first_face.get_all_detect_info()
+            unitySender.transportFaceData(dets_dict)
+            if show_landmarks:
+                for mark in first_face.landmarks:
+                    cv2.circle(frame, (int(mark[0]), int(mark[1])),
+                               1, (255, 255, 255), -1, cv2.LINE_AA)
+        cv2.imshow('frame', frame)
+        action = cv2.waitKey(1) & 0xFF
+        if action == ord('q'):
+            faceTracker.stop()
             break
-    gazeTracker.capture.release()
+        elif action == ord('l'):
+            show_landmarks = not show_landmarks
+            print("show landmarks : "+str(show_landmarks))
     cv2.destroyAllWindows()
 
 

@@ -71,6 +71,7 @@ public class TcpReceiver : MonoBehaviour
 
     private void Receive_Callback(IAsyncResult ar)
     {
+        
         if (!this.socket.Connected)
             return;
         int read = this.socket.EndReceive(ar);

@@ -7,11 +7,13 @@ class FaceDataTransportHandler(abc.ABC):
         raise NotImplementedError("Abstract method not implemented!")
 
 
-class GazeDetector:
+class FaceDetector:
     @abc.abstractmethod
     def detect_faces_from_image(self, image_RGB):
         raise NotImplementedError("Abstract method not implemented!")
 
+
+class LandmarksDetector:
     @abc.abstractmethod
-    def detect_landmarks_from_faces(self, face_image, detected_faces):
+    def detect_landmarks_from_face(self, face_image, detected_faces):
         raise NotImplementedError("Abstract method not implemented!")
