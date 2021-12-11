@@ -11,7 +11,7 @@ class FaceTracker(object):
     may be modify it in future
     '''
 
-    def __init__(self, capture, face_detector: FaceDetector, landmarks_detector: LandmarksDetector, detectInterval=3):
+    def __init__(self, capture, face_detector: FaceDetector, landmarks_detector: LandmarksDetector, detectInterval=5):
         self.capture = capture
         self._face_detector = face_detector
         self._landmarks_detector = landmarks_detector

@@ -7,6 +7,7 @@ from virtual_bird.Models.Adrian_Face import Adrian_Face
 
 def main():
     show_landmarks = False
+    detecting = False
     adrian_Face = Adrian_Face()
     faceTracker = FaceTracker(cv2.VideoCapture(0), adrian_Face, adrian_Face)
     faceTracker.start()
@@ -17,15 +18,16 @@ def main():
         if frame is None:
             time.sleep(0.5)
             continue
-        face_list = faceTracker.get_current_face_list()
-        if len(face_list) > 0:
-            first_face = face_list[0]
-            dets_dict = first_face.get_all_detect_info()
-            unitySender.transportFaceData(dets_dict)
-            if show_landmarks:
-                for mark in first_face.landmarks:
-                    cv2.circle(frame, (int(mark[0]), int(mark[1])),
-                               1, (255, 255, 255), -1, cv2.LINE_AA)
+        if detecting:
+            face_list = faceTracker.get_current_face_list()
+            if len(face_list) > 0:
+                first_face = face_list[0]
+                dets_dict = first_face.get_all_detect_info()
+                unitySender.transportFaceData(dets_dict)
+                if show_landmarks:
+                    for mark in first_face.landmarks:
+                        cv2.circle(frame, (int(mark[0]), int(mark[1])),
+                                   1, (255, 255, 255), -1, cv2.LINE_AA)
         cv2.imshow('frame', frame)
         action = cv2.waitKey(1) & 0xFF
         if action == ord('q'):
@@ -34,6 +36,9 @@ def main():
         elif action == ord('l'):
             show_landmarks = not show_landmarks
             print("show landmarks : "+str(show_landmarks))
+        elif action == ord('d'):
+            detecting = not detecting
+            print("detecting : "+str(detecting))
     cv2.destroyAllWindows()
 
 
