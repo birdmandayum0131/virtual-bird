@@ -25,6 +25,10 @@ class Face(object):
         return self._landmarks
 
     @property
+    def bbox(self):
+        return self._bbox
+
+    @property
     def eyes(self):
         if self._eyes is None:
             self._eyes = Eyes(self.image, self.landmarks)

@@ -1,8 +1,10 @@
 import cv2
 import time
+from virtual_bird.utils.Visualize import landmark_on_frame
 from virtual_bird.FaceTracking import FaceTracker
 from virtual_bird.TcpServer import TcpServer
 from virtual_bird.Models.Adrian_Face import Adrian_Face
+from virtual_bird.utils.File import txt2npylandmarks
 
 
 def main():
@@ -25,9 +27,9 @@ def main():
                 dets_dict = first_face.get_all_detect_info()
                 unitySender.transportFaceData(dets_dict)
                 if show_landmarks:
-                    for mark in first_face.landmarks:
-                        cv2.circle(frame, (int(mark[0]), int(mark[1])),
-                                   1, (255, 255, 255), -1, cv2.LINE_AA)
+                    frame = landmark_on_frame(frame, first_face.landmarks)
+                    import pdb
+                    pdb.set_trace()
         cv2.imshow('frame', frame)
         action = cv2.waitKey(1) & 0xFF
         if action == ord('q'):
