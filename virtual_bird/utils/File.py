@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 
 def landmarks2txt(landmarks, file_path):
@@ -24,3 +25,19 @@ def txt2npylandmarks(file_path):
             pointCount += 1
         print("read %d landmarks" % (pointCount))
     return np.asarray(landmarks)
+
+
+def save_camera_intrinsic(path, intrinsic):
+    cameraMatrix, distanceDistortion = intrinsic
+    cv_file = cv2.FileStorage(path, cv2.FILE_STORAGE_WRITE)
+    cv_file.write("camera matrix", cameraMatrix)
+    cv_file.write("distance distortion", distanceDistortion)
+    cv_file.release()
+
+
+def load_camera_intrinsic(path):
+    cv_file = cv2.FileStorage(path, cv2.FILE_STORAGE_READ)
+    cameraMatrix = cv_file.getNode("camera matrix").mat()
+    distanceDistortion = cv_file.getNode("distance distortion").mat()
+    cv_file.release()
+    return (cameraMatrix, distanceDistortion)
