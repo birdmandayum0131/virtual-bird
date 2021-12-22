@@ -1,5 +1,6 @@
 from ..Abstract import LandmarksDetector, HeadPoseEstimator
 from .Eyes import Eyes
+import cv2
 
 
 class Face(object):
@@ -44,8 +45,9 @@ class Face(object):
     @property
     def rotation(self):
         if self._rotation is None:
-            self._rotation, self._translation = self._headposeEstimator.head_pose_from_68_landmarks(
+            rotation, self._translation = self._headposeEstimator.head_pose_from_68_landmarks(
                 self.landmarks)
+            self._rotation = self._fixDirectionZinverse(rotation)
         return self._rotation
 
     @property
@@ -64,3 +66,17 @@ class Face(object):
             self._detect_info = dict()
             self._detect_info.update(self.eyes.gaze)
         return self._detect_info
+
+    def _fixDirectionZinverse(self, rotation):
+        '''
+        this function use simple/rough conditional expression to determine whether to inverse to symmetric the z axis
+
+        sometimes solvePnP will wrong predict the rotation
+        because of the 3D to 2D projection(3D point symmetrical to your screen will be project to same 2D point)
+        these codes doesn't perfectly make sense(cuz of my space knowledgement)
+        will make it better in future
+        '''
+        _r, _ = cv2.Rodrigues(rotation)
+        if _r[:2].sum() < 0:
+            _r[2, :] *= -1
+        return _r

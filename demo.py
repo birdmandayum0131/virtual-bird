@@ -1,6 +1,5 @@
 import cv2
 import time
-import numpy as np
 from virtual_bird.utils.Camera import *
 from virtual_bird.utils.Visualize import Visualizer
 from virtual_bird.FaceTracking import FaceTracker
@@ -25,8 +24,8 @@ def main():
     visualizer = Visualizer()
     faceTracker.start()
 
-    #unitySender = TcpServer(host="127.0.0.1", port=1208)
-    # unitySender.startUpListen()
+    unitySender = TcpServer(host="127.0.0.1", port=1208)
+    unitySender.startUpListen()
 
     while True:
         frame = faceTracker.frame
@@ -38,8 +37,8 @@ def main():
             face_list = faceTracker.get_current_face_list()
             if len(face_list) > 0:
                 first_face = face_list[0]
-                #dets_dict = first_face.get_all_detect_info()
-                # unitySender.transportFaceData(dets_dict)
+                dets_dict = first_face.get_all_detect_info()
+                unitySender.transportFaceData(dets_dict)
                 visualizer.face = first_face
         frame = visualizer.getRenderImage()
         cv2.imshow('frame', frame)
@@ -56,6 +55,8 @@ def main():
         elif action == ord('h'):
             visualizer.show_headBox = not visualizer.show_headBox
             print("show head Box : "+str(visualizer.show_headBox))
+            #import pdb
+            # pdb.set_trace()
     cv2.destroyAllWindows()
 
 

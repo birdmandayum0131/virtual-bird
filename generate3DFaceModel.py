@@ -1,7 +1,7 @@
 import cv2
 import time
 import numpy as np
-from virtual_bird.utils.Visualize import landmark_on_frame
+from virtual_bird.utils.Visualize import Visualizer, landmark_on_frame
 from virtual_bird.utils.File import landmarks2txt
 from virtual_bird.FaceTracking import FaceTracker
 from virtual_bird.Models.Adrian_Face import Adrian_Face_3D
@@ -11,16 +11,20 @@ def main():
     save_landmarks = []
     adrian_Face = Adrian_Face_3D()
     faceTracker = FaceTracker(cv2.VideoCapture(0), adrian_Face, adrian_Face)
+    visualizer = Visualizer()
+    visualizer.show_landmarks = True
     faceTracker.start()
     while True:
         frame = faceTracker.frame
         if frame is None:
             time.sleep(0.5)
             continue
+        visualizer.image = frame
         face_list = faceTracker.get_current_face_list()
         if len(face_list) > 0:
             first_face = face_list[0]
-            frame = landmark_on_frame(frame, first_face.landmarks)
+            visualizer.face = first_face
+        frame = visualizer.getRenderImage()
         cv2.imshow('frame', frame)
         action = cv2.waitKey(1) & 0xFF
         if action == ord('q'):
@@ -39,6 +43,7 @@ def main():
         elif action == ord('s'):
             np_landmarks = np.asarray(save_landmarks)
             np_landmarks = np_landmarks.mean(axis=0)
+            np_landmarks[:, 2] *= -1
             check_frame = landmark_on_frame(np.zeros_like(frame), np_landmarks)
             cv2.imshow('landmarks', check_frame)
             cv2.waitKey(0)
