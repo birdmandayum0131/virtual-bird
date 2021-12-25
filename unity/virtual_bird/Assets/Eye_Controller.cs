@@ -20,13 +20,6 @@ public class Eye_Controller : MonoBehaviour, Face_Synchronizer.GazeHandler
     void Update()
     {
         Focus();
-
-        //Vector3 direction2target = (-1 * (target.transform.position - eyeBall.transform.position)).normalized;
-        //eyeBall.transform.right = Vector3.MoveTowards(eyeBall.transform.right, direction2target, Time.deltaTime * this.followSpeed);
-
-        //Quaternion targetRotation = Quaternion.LookRotation(direction2target, eyeBall.transform.right);
-        //eyeBall.transform.rotation = Quaternion.RotateTowards(eyeBall.transform.rotation, targetRotation, Time.deltaTime * this.degreeStep * this.followSpeed )
-
     }
     void Reset()
     {

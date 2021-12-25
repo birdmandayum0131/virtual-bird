@@ -1,5 +1,8 @@
 from ..Abstract import LandmarksDetector, HeadPoseEstimator
 from .Eyes import Eyes
+from ..utils.Camera import euler2quaternion
+from math import pi, atan2, asin
+import numpy as np
 import cv2
 
 
@@ -16,6 +19,7 @@ class Face(object):
         self._translation = None
         self._gaze = None
         self._eyes = None
+        self._center = None
 
     @property
     def image(self):
@@ -34,7 +38,10 @@ class Face(object):
 
     @property
     def center(self):
-        return ((self._bbox[0] + self._bbox[2])/2, (self._bbox[1] + self._bbox[3])/2)
+        if self._center is None:
+            self._center = np.asarray(
+                [(self._bbox[0] + self._bbox[2])/2, (self._bbox[1] + self._bbox[3])/2]).ravel()
+        return self._center
 
     @property
     def eyes(self):
@@ -61,10 +68,23 @@ class Face(object):
     def headPoseEstimator(self):
         return self._headposeEstimator
 
+    def _headRotation(self):
+        '''
+        roll = 180*atan2(-self.rotation[2][1], self.rotation[2][2])/pi
+        pitch = 180*asin(self.rotation[2][0])/pi
+        yaw = 180*atan2(-self.rotation[1][0], self.rotation[0][0])/pi
+        '''
+        _, _, _, _, _, _, angle = cv2.decomposeProjectionMatrix(
+            cv2.hconcat((self.rotation, self.translation)))
+        roll, pitch, yaw = angle
+        w, x, y, z = euler2quaternion(roll*pi/180, pitch*pi/180, yaw*pi/180)
+        return {"head": "(%.3f, %.3f, %.3f, %.3f)" % (w, x, y, z)}
+
     def get_all_detect_info(self):
         if self._detect_info is None:
             self._detect_info = dict()
             self._detect_info.update(self.eyes.gaze)
+            self._detect_info.update(self._headRotation())
         return self._detect_info
 
     def _fixDirectionZinverse(self, rotation):

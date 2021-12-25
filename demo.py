@@ -11,8 +11,8 @@ resolution = res_480p
 
 
 def main():
-    detecting = False
     camera = cv2.VideoCapture(0)
+    change_resolution(camera, resolution["width"], resolution["height"])
     w, h = camera.get(cv2.CAP_PROP_FRAME_WIDTH), camera.get(
         cv2.CAP_PROP_FRAME_HEIGHT)
     headPoseEstimator = OpenCVHeadPoseEstimator(
@@ -33,13 +33,12 @@ def main():
             time.sleep(0.5)
             continue
         visualizer.image = frame
-        if detecting:
-            face_list = faceTracker.get_current_face_list()
-            if len(face_list) > 0:
-                first_face = face_list[0]
-                dets_dict = first_face.get_all_detect_info()
-                unitySender.transportFaceData(dets_dict)
-                visualizer.face = first_face
+        face_list = faceTracker.get_current_face_list()
+        if len(face_list) > 0:
+            first_face = face_list[0]
+            dets_dict = first_face.get_all_detect_info()
+            unitySender.transportFaceData(dets_dict)
+            visualizer.face = first_face
         frame = visualizer.getRenderImage()
         cv2.imshow('frame', frame)
         action = cv2.waitKey(1) & 0xFF
@@ -49,14 +48,13 @@ def main():
         elif action == ord('l'):
             visualizer.show_landmarks = not visualizer.show_landmarks
             print("show landmarks : "+str(visualizer.show_landmarks))
-        elif action == ord('d'):
-            detecting = not detecting
-            print("detecting : "+str(detecting))
         elif action == ord('h'):
             visualizer.show_headBox = not visualizer.show_headBox
             print("show head Box : "+str(visualizer.show_headBox))
-            #import pdb
-            # pdb.set_trace()
+        elif action == ord('a'):
+            visualizer.show_axis = not visualizer.show_axis
+            print("show head axis : "+str(visualizer.show_axis))
+
     cv2.destroyAllWindows()
 
 

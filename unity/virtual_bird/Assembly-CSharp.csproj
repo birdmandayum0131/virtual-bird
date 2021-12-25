@@ -38,6 +38,7 @@
   <ItemGroup>
      <Compile Include="Assets\Eye_Controller.cs" />
      <Compile Include="Assets\Face_Synchronizer.cs" />
+     <Compile Include="Assets\Head_Controller.cs" />
      <Compile Include="Assets\TcpReceiver.cs" />
      <None Include="Assets\Shaders\ToonShader.shader" />
      <None Include="Assets\Shaders\SpookyStandardShader.shader" />
