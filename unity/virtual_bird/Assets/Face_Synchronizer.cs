@@ -51,19 +51,6 @@ public class Face_Synchronizer : MonoBehaviour, TcpReceiver.FaceDataHandler
         public Vector2 leftEyeGaze;
         public Vector2 rightEyeGaze;
     }
-    /*
-    public struct EulerRotation
-    {
-        public EulerRotation(float roll, float pitch, float yaw)
-        {
-            this.roll = roll;
-            this.pitch = pitch;
-            this.yaw = yaw;
-        }
-        public float roll;
-        public float pitch;
-        public float yaw;
-    }*/
 
     public GazeHandler eyeController;
     public HeadHandler headController;
@@ -101,8 +88,17 @@ public class Face_Synchronizer : MonoBehaviour, TcpReceiver.FaceDataHandler
         _leftEyeGaze = new Vector2(float.Parse(_left_value.Groups[1].Value), float.Parse(_left_value.Groups[2].Value));
         _rightEyeGaze = new Vector2(float.Parse(_right_value.Groups[1].Value), float.Parse(_right_value.Groups[2].Value));
         this.eyeGaze = new EyeGaze(_leftEyeGaze, _rightEyeGaze);
-        this.headRotation = new Quaternion(float.Parse(_head_value.Groups[2].Value), float.Parse(_head_value.Groups[3].Value), float.Parse(_head_value.Groups[4].Value), float.Parse(_head_value.Groups[1].Value));
+        this.headRotation = reviseHeadPose(float.Parse(_head_value.Groups[1].Value), float.Parse(_head_value.Groups[2].Value), float.Parse(_head_value.Groups[3].Value), bool.Parse(_head_value.Groups[4].Value));
     }
+
+    private Quaternion reviseHeadPose(float roll, float pitch, float yaw, bool revise)
+    {
+        if (revise)
+            return new Quaternion(1, 0, 0, 0) * Quaternion.Euler(roll, -pitch, yaw);
+        else
+            return Quaternion.Euler(roll, pitch, yaw);
+    }
+
     void InitPacketResolveInfo()
     {
         leftEyeRegex = new Regex(@"(?<left>(?<='left': )'\(.*?\)')");

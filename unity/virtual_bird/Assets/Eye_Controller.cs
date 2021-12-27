@@ -23,12 +23,12 @@ public class Eye_Controller : MonoBehaviour, Face_Synchronizer.GazeHandler
     }
     void Reset()
     {
-
-        this.eyeBall.transform.rotation = Quaternion.Euler(0, 70, 0);
-        this.maxEyeMoving = new Vector2(1f, 1f);
+        LinkObjects();
+        this.eyeBall.transform.rotation = Quaternion.Euler(70, 0, 270);
+        this.maxEyeMoving = new Vector2(2f, 2f);
         this.eyeBall_offset = new Vector3(0f, 0.7f, 2f);
         this.targetPosition = new Vector3(0f, 0f, 0f) + this.eyeBall_offset;
-        //this.LookAt(new Face_Synchronizer.EyeGaze(new Vector2(0f, 0f), new Vector2(0f, 0f)));
+        this.LookAt(new Face_Synchronizer.EyeGaze(new Vector2(0f, 0f), new Vector2(0f, 0f)));
     }
     void LinkObjects()
     {

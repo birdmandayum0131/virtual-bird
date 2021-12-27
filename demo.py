@@ -7,7 +7,7 @@ from virtual_bird.TcpServer import TcpServer
 from virtual_bird.Models.Adrian_Face import Adrian_Face
 from virtual_bird.Models.OpenCVHeadPose import OpenCVHeadPoseEstimator
 
-resolution = res_480p
+resolution = res_240p
 
 
 def main():
@@ -36,6 +36,8 @@ def main():
         face_list = faceTracker.get_current_face_list()
         if len(face_list) > 0:
             first_face = face_list[0]
+            # first_face._headRotation()
+            # print(first_face.translation)
             dets_dict = first_face.get_all_detect_info()
             unitySender.transportFaceData(dets_dict)
             visualizer.face = first_face

@@ -52,16 +52,19 @@ class Face(object):
     @property
     def rotation(self):
         if self._rotation is None:
-            rotation, self._translation = self._headposeEstimator.head_pose_from_68_landmarks(
+            rotation, translation = self._headposeEstimator.head_pose_from_68_landmarks(
                 self.landmarks)
-            self._rotation = self._fixDirectionZinverse(rotation)
+            self._rotation, self._translation = cv2.Rodrigues(rotation)[
+                0], translation
         return self._rotation
 
     @property
     def translation(self):
         if self._translation is None:
-            self._rotation, self._translation = self._headposeEstimator.head_pose_from_68_landmarks(
+            rotation, translation = self._headposeEstimator.head_pose_from_68_landmarks(
                 self.landmarks)
+            self._rotation, self._translation = cv2.Rodrigues(rotation)[
+                0], translation
         return self._translation
 
     @property
@@ -69,16 +72,9 @@ class Face(object):
         return self._headposeEstimator
 
     def _headRotation(self):
-        '''
-        roll = 180*atan2(-self.rotation[2][1], self.rotation[2][2])/pi
-        pitch = 180*asin(self.rotation[2][0])/pi
-        yaw = 180*atan2(-self.rotation[1][0], self.rotation[0][0])/pi
-        '''
-        _, _, _, _, _, _, angle = cv2.decomposeProjectionMatrix(
-            cv2.hconcat((self.rotation, self.translation)))
-        roll, pitch, yaw = angle
-        w, x, y, z = euler2quaternion(roll*pi/180, pitch*pi/180, yaw*pi/180)
-        return {"head": "(%.3f, %.3f, %.3f, %.3f)" % (w, x, y, z)}
+        pitch, yaw, roll = cv2.decomposeProjectionMatrix(
+            cv2.hconcat((self.rotation, self.translation)))[6]
+        return {"head": "(%.3f, %.3f, %.3f, %s)" % (roll, pitch, yaw, str(self.translation[2][0] < 0))}
 
     def get_all_detect_info(self):
         if self._detect_info is None:
@@ -87,8 +83,12 @@ class Face(object):
             self._detect_info.update(self._headRotation())
         return self._detect_info
 
-    def _fixDirectionZinverse(self, rotation):
+    # not used temporarily
+    # now handle this problem in unity
+    def _fixDirectionZinverse(self, rotation, translation):
         '''
+        #deprecated
+
         this function use simple/rough conditional expression to determine whether to inverse to symmetric the z axis
 
         sometimes solvePnP will wrong predict the rotation
@@ -97,6 +97,5 @@ class Face(object):
         will make it better in future
         '''
         _r, _ = cv2.Rodrigues(rotation)
-        if _r[:2].sum() < 0:
-            _r[2, :] *= -1
-        return _r
+        _t = translation.copy()
+        return _r, _t

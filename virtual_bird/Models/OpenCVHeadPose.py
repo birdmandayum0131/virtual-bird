@@ -47,8 +47,6 @@ class OpenCVHeadPoseEstimator(HeadPoseEstimator):
 
     # Override
     def head_pose_from_68_landmarks(self, landmarks):
-        #r_vec = np.asarray([[0.0], [0.0], [3.14]])
-        #t_vec = np.zeros((3, 1))
         _, rvec, tvec = cv2.solvePnP(
             self.static_68_landmarks, landmarks, self.camera_matrix, self.distance_distortion)
         return (rvec, tvec)

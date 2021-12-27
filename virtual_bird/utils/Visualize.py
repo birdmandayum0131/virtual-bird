@@ -90,9 +90,17 @@ class Visualizer(object):
         cv2.polylines(cpyFrame, [point2D[4:]], isClosed=True,
                       color=(64, 255, 64), thickness=thickness, lineType=cv2.LINE_AA)
         # connect four side edges
-        for i in range(4):
-            cv2.line(cpyFrame, tuple(point2D[i]), tuple(
-                point2D[i+4]), (255, 64, 64), thickness, cv2.LINE_AA)
+        # for i in range(4):
+        #    cv2.line(cpyFrame, tuple(point2D[i]), tuple(point2D[i+4]), (255, 64, 64), thickness, cv2.LINE_AA)
+        cv2.line(cpyFrame, tuple(point2D[0]), tuple(
+            point2D[4]), (255, 0, 0), thickness, cv2.LINE_AA)
+        cv2.line(cpyFrame, tuple(point2D[1]), tuple(
+            point2D[5]), (0, 255, 0), thickness, cv2.LINE_AA)
+        cv2.line(cpyFrame, tuple(point2D[2]), tuple(
+            point2D[6]), (0, 0, 255), thickness, cv2.LINE_AA)
+        cv2.line(cpyFrame, tuple(point2D[3]), tuple(
+            point2D[7]), (0, 0, 0), thickness, cv2.LINE_AA)
+
         return cpyFrame
 
     def _draw_head_axis(self, frame, thickness=3):
