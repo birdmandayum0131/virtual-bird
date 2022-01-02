@@ -6,6 +6,7 @@
   This project aims to apply different face/body alignment algorithm on virtual character synchronizing.  
   ~~And promote my coding level.~~
 ## Timeline
+  - support Dlib Face/Landmarks Detector `2022/01/03`
   - change development environment to newer version(~~Of course, not hardware~~😢) `2021/12/27`
   - support OpenCV Head Pose Estimation `2021/12/26`
   - support OpenCV Gaze Tracking `2021/12/08`
@@ -13,9 +14,13 @@
   - support [Ghost][] character `2021/12/08`
 ## Roadmap
   - Algorithm
+    - Face Detection
+      - [x] [SFD][FAN]
+      - [x] [BlazeFace][FAN]
+      - [x] [Dlib](http://dlib.net/)
     - Landmarks Detection
       - [x] [FAN][]
-      - [ ] [Dlib](http://dlib.net/)
+      - [x] [Dlib](http://dlib.net/)
     - Gaze Tracking
       - [x] OpenCV moments(simple)
     - Head Alignment
@@ -41,6 +46,7 @@
   - [antoinelame/GazeTracking][]
   - [kwea123/VTuber_Unity][]
   - [yinguobing/head-pose-estimation][]
+  - [dbolya/yolact](https://github.com/dbolya/yolact)
 
 [FAN]:                              https://github.com/1adrianb/face-alignment                                                        "1adrianb/face-alignment"
 [antoinelame/GazeTracking]:         https://github.com/antoinelame/GazeTracking                                                       "antoinelame/GazeTracking"
