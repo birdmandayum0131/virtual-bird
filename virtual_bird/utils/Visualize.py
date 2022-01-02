@@ -1,5 +1,8 @@
 import cv2
 import numpy as np
+import time
+from collections import deque
+
 
 
 class Visualizer(object):
@@ -9,6 +12,12 @@ class Visualizer(object):
         self._show_landmarks = False
         self._show_headBox = False
         self._show_axis = False
+        self._show_fps = True
+        self._fps = 0
+        self._fps_interval = deque(maxlen=10)
+        self._start_time = time.time()
+        self._end_time = None
+               
 
     @property
     def show_landmarks(self):
@@ -50,6 +59,14 @@ class Visualizer(object):
     def face(self, value):
         self._face = value
 
+    @property
+    def show_fps(self):
+        return self._show_fps
+
+    @show_fps.setter
+    def show_fps(self, value):
+        self._show_fps = value
+
     def getRenderImage(self):
         img = self.image.copy()
         if self.face is not None:
@@ -59,11 +76,13 @@ class Visualizer(object):
                 img = self._draw_headpose_box(img)
             if self.show_axis:
                 img = self._draw_head_axis(img)
+        if self.show_fps:
+            img = self._draw_fps(img)
         return img
 
     def _landmark_on_frame(self, frame, color=(255, 255, 255), thickness=1):
         return landmark_on_frame(frame, self.face.landmarks, color, thickness)
-
+    
     def _draw_headpose_box(self, frame, color=(128, 128, 255), thickness=2):
         cpyFrame = frame.copy()
         # get static model center
@@ -102,7 +121,7 @@ class Visualizer(object):
             point2D[7]), (0, 0, 0), thickness, cv2.LINE_AA)
 
         return cpyFrame
-
+    
     def _draw_head_axis(self, frame, thickness=3):
         cpyFrame = frame.copy()
         center = self.face.headPoseEstimator.static_landmarks.mean(axis=0)
@@ -120,6 +139,20 @@ class Visualizer(object):
         cpyFrame = cv2.line(
             cpyFrame, rotated_axis[0], rotated_axis[3], (255, 0, 0), thickness)
         return cpyFrame
+    
+    def _draw_fps(self, frame):
+        cpyFrame = frame.copy()
+        self._end_time = time.time()
+        self._fps_interval.append(self._end_time - self._start_time)
+        self._start_time = self._end_time
+        self._fps = 1 / np.mean(self._fps_interval)
+        text = "FPS:%.1f"%(self._fps)
+        textsize, _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_PLAIN, 1, 2)
+        text_w, text_h = textsize
+        cv2.rectangle(cpyFrame, (0,0), (text_w+10, text_h+10), (119, 66, 141), -1)
+        cv2.putText(cpyFrame, "FPS:%.1f"%(self._fps), (5, 5 + text_h + 2 - 1), cv2.FONT_HERSHEY_PLAIN, fontScale=1, thickness=2, color=(255, 255, 255))
+        return cpyFrame
+        
 
 
 def landmark_on_frame(frame, landmarks, color=(255, 255, 255), thickness=1):

@@ -4,12 +4,12 @@ import numpy as np
 from virtual_bird.utils.Visualize import Visualizer, landmark_on_frame
 from virtual_bird.utils.File import landmarks2txt
 from virtual_bird.FaceTracking import FaceTracker
-from virtual_bird.Models.Adrian_Face import Adrian_Face_3D
+from virtual_bird.Models.Adrian_Face import Adrian_Face
 
 
 def main():
     save_landmarks = []
-    adrian_Face = Adrian_Face_3D()
+    adrian_Face = Adrian_Face(landmarksType=Adrian_Face.Landmarks_3D)
     faceTracker = FaceTracker(cv2.VideoCapture(0), adrian_Face, adrian_Face)
     visualizer = Visualizer()
     visualizer.show_landmarks = True

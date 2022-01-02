@@ -60,7 +60,6 @@ class FaceTracker(object):
         self._initThread.join()
         while not self._is_stop:
             input = cv2.cvtColor(self._frame, cv2.COLOR_BGR2RGB)
-            dets = self._face_detector.detect_faces_from_image(
-                image_RGB=input)
+            dets = self._face_detector.detect_faces_from_image(image_RGB=input)
             self._face_list = [
                 Face(input, bbox, self._landmarks_detector, self._headposeEstimator) for bbox in dets]

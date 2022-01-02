@@ -15,7 +15,7 @@ class FaceDetector:
 
 class LandmarksDetector:
     @abc.abstractmethod
-    def detect_landmarks_from_face(self, face_image, detected_faces):
+    def detect_landmarks_from_face(self, face_image, detected_face):
         raise NotImplementedError("Abstract method not implemented!")
 
 
