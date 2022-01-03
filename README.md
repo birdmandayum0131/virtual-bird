@@ -7,8 +7,8 @@
   This project aims to apply different face/body alignment algorithm on virtual character synchronizing.  
   ~~And promote my coding level.~~   
 ## Getting Started
-The following steps will install required packages and run the demo program.
-And the tutorial is based on anaconda environment.
+The following steps will install required packages and run the demo program,  
+and the tutorial is based on anaconda environment.
 ### Prerequisites
 I use these packages to develop the project.
 - [FAN][]
