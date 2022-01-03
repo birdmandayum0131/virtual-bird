@@ -16,8 +16,8 @@ def main():
     faceTracker = FaceTracker(camera, cfg.face_detector, cfg.landmarks_detector, headPoseEstimator)
     visualizer = Visualizer()
     faceTracker.start()
-    #unitySender = TcpServer(host="127.0.0.1", port=1208)
-    #unitySender.startUpListen()
+    unitySender = TcpServer(host="127.0.0.1", port=1208)
+    unitySender.startUpListen()
 
     while True:
         frame = faceTracker.frame
@@ -28,8 +28,8 @@ def main():
         face_list = faceTracker.get_current_face_list()
         if len(face_list) > 0:
             first_face = face_list[0]
-            #dets_dict = first_face.get_all_detect_info()
-            #unitySender.transportFaceData(dets_dict)
+            dets_dict = first_face.get_all_detect_info()
+            unitySender.transportFaceData(dets_dict)
             visualizer.face = first_face
         frame = visualizer.getRenderImage()
         cv2.imshow('frame', frame)
