@@ -37,6 +37,9 @@ def main():
         if action == ord('q'):
             faceTracker.stop()
             break
+        elif action == ord('f'):
+            visualizer.show_face_box = not visualizer.show_face_box
+            print("show face box : "+str(visualizer.show_face_box))
         elif action == ord('l'):
             visualizer.show_landmarks = not visualizer.show_landmarks
             print("show landmarks : "+str(visualizer.show_landmarks))

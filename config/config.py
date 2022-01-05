@@ -69,8 +69,8 @@ model_config = Config({
 criteria = (cv2.TERM_CRITERIA_EPS+cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
 base_config = Config({
-    'face_detector' : model_config.face_detector.blazeface,
-    'landmarks_detector' : model_config.landmarks_detector.FAN,
+    'face_detector' : model_config.face_detector.dlib,
+    'landmarks_detector' : model_config.landmarks_detector.dlib,
     'head_pose_estimator' : model_config.head_pose_estimator.openCV,
     'camera' : res_240p,
     'landmarks_static_model' : 'birdFace.txt'

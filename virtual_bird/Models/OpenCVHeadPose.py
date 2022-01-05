@@ -7,7 +7,7 @@ import cv2
 class OpenCVHeadPoseEstimator(HeadPoseEstimator):
 
     def __init__(self, static_68_landmarks_path, frame_shape, intrinsic_path=None):
-        self.static_68_landmarks = txt2npylandmarks(static_68_landmarks_path)
+        self._static_facial_landmarks = txt2npylandmarks(static_68_landmarks_path)
         self._frame_shape = frame_shape
         self._camera_matrix = None
         self._distance_distortion = None
@@ -18,7 +18,7 @@ class OpenCVHeadPoseEstimator(HeadPoseEstimator):
     # Override
     @property
     def static_landmarks(self):
-        return self.static_68_landmarks
+        return self._static_facial_landmarks
 
     # Override
     @property
@@ -43,10 +43,10 @@ class OpenCVHeadPoseEstimator(HeadPoseEstimator):
     # Override
     @property
     def model_size(self):
-        return self.static_68_landmarks.max(axis=0) - self.static_68_landmarks.min(axis=0)
+        return self._static_facial_landmarks.max(axis=0) - self._static_facial_landmarks.min(axis=0)
 
     # Override
     def head_pose_from_68_landmarks(self, landmarks):
         _, rvec, tvec = cv2.solvePnP(
-            self.static_68_landmarks, landmarks, self.camera_matrix, self.distance_distortion)
+            self._static_facial_landmarks, landmarks, self.camera_matrix, self.distance_distortion)
         return (rvec, tvec)

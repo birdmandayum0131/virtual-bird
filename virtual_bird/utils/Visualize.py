@@ -12,6 +12,7 @@ class Visualizer(object):
         self._show_landmarks = False
         self._show_headBox = False
         self._show_axis = False
+        self._show_face_box = False
         self._show_fps = True
         self._fps = 0
         self._fps_interval = deque(maxlen=10)
@@ -44,6 +45,14 @@ class Visualizer(object):
         self._show_axis = value
 
     @property
+    def show_face_box(self):
+        return self._show_face_box
+
+    @show_face_box.setter
+    def show_face_box(self, value):
+        self._show_face_box = value
+
+    @property
     def image(self):
         return self._image
 
@@ -70,6 +79,8 @@ class Visualizer(object):
     def getRenderImage(self):
         img = self.image.copy()
         if self.face is not None:
+            if self._show_face_box:
+                img = self._draw_face_box(img)
             if self.show_landmarks:
                 img = self._landmark_on_frame(img)
             if self.show_headBox:
@@ -80,10 +91,16 @@ class Visualizer(object):
             img = self._draw_fps(img)
         return img
 
+    def _draw_face_box(self, frame, color=(160,202,181), thickness=2):
+        cpyFrame = frame.copy()
+        x1, y1, x2, y2 = self.face.bbox[:4]
+        cv2.rectangle(cpyFrame, (int(x1), int(y1)), (int(x2), int(y2)), color, thickness)
+        return cpyFrame
+    
     def _landmark_on_frame(self, frame, color=(255, 255, 255), thickness=1):
         return landmark_on_frame(frame, self.face.landmarks, color, thickness)
     
-    def _draw_headpose_box(self, frame, color=(128, 128, 255), thickness=2):
+    def _draw_headpose_box(self, frame, thickness=2):
         cpyFrame = frame.copy()
         # get static model center
         x, y, _ = self.face.headPoseEstimator.static_landmarks.mean(axis=0)
