@@ -1,14 +1,9 @@
 ﻿using UnityEngine;
-
 using System.Net.Sockets;
 using System;
 using System.Text;
 public class TcpReceiver : MonoBehaviour
 {
-    public interface FaceDataHandler
-    {
-        void parseFaceData(string receiveData);
-    }
     public FaceDataHandler faceDataHandler;
     private static TcpReceiver _singleton;
     public static TcpReceiver Singleton
@@ -61,6 +56,7 @@ public class TcpReceiver : MonoBehaviour
         buffer = new byte[BUFFER_SIZE];
         try
         {
+            Send("TCP Data");
             this.socket.BeginReceive(buffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(Receive_Callback), socket);
         }
         catch (Exception e)
@@ -71,7 +67,7 @@ public class TcpReceiver : MonoBehaviour
 
     private void Receive_Callback(IAsyncResult ar)
     {
-        
+
         if (!this.socket.Connected)
             return;
         int read = this.socket.EndReceive(ar);
@@ -79,7 +75,6 @@ public class TcpReceiver : MonoBehaviour
         {
             receive_data = Encoding.UTF8.GetString(buffer);
             faceDataHandler.parseFaceData(receive_data);
-            Send("Done!");
             Receive();
         }
     }

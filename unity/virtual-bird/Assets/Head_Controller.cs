@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Head_Controller : MonoBehaviour, Face_Synchronizer.HeadHandler
+public class Head_Controller : MonoBehaviour, HeadHandler
 {
     private GameObject body;
     private Quaternion bodyRotation;
@@ -55,4 +55,5 @@ public class Head_Controller : MonoBehaviour, Face_Synchronizer.HeadHandler
     {
         this.targetRotation = Quaternion.Euler(-rotation.eulerAngles[2], rotation.eulerAngles[1], rotation.eulerAngles[0]);
     }
+
 }

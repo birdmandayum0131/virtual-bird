@@ -4,7 +4,7 @@ from config.config import cfg
 from virtual_bird.utils.Camera import *
 from virtual_bird.utils.Visualize import Visualizer
 from virtual_bird.FaceTracking import FaceTracker
-from virtual_bird.TcpServer import TcpServer
+from virtual_bird.SocketServer import UdpServer as SocketServer
 
 
 def main():
@@ -16,8 +16,8 @@ def main():
     faceTracker = FaceTracker(camera, cfg.face_detector, cfg.landmarks_detector, headPoseEstimator)
     visualizer = Visualizer()
     faceTracker.start()
-    unitySender = TcpServer(host="127.0.0.1", port=1208)
-    unitySender.startUpListen()
+    unitySender = SocketServer(host="127.0.0.1", port=1208)
+    unitySender.start()
 
     while True:
         frame = faceTracker.frame
@@ -49,7 +49,8 @@ def main():
         elif action == ord('a'):
             visualizer.show_axis = not visualizer.show_axis
             print("show head axis : "+str(visualizer.show_axis))
-
+    
+    unitySender.stop()
     cv2.destroyAllWindows()
 
 

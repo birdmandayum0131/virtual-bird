@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class Face_Synchronizer : MonoBehaviour, TcpReceiver.FaceDataHandler
+public class Face_Synchronizer : MonoBehaviour, FaceDataHandler
 {
 
     private EyeGaze _eyeGaze;
@@ -33,24 +33,8 @@ public class Face_Synchronizer : MonoBehaviour, TcpReceiver.FaceDataHandler
             HeadChanged();
         }
     }
-    public interface GazeHandler
-    {
-        void LookAt(EyeGaze gaze);
-    }
-    public interface HeadHandler
-    {
-        void RotateTo(Quaternion rotation);
-    }
-    public struct EyeGaze
-    {
-        public EyeGaze(Vector2 leftEye, Vector2 rightEye)
-        {
-            this.leftEyeGaze = leftEye;
-            this.rightEyeGaze = rightEye;
-        }
-        public Vector2 leftEyeGaze;
-        public Vector2 rightEyeGaze;
-    }
+
+
 
     public GazeHandler eyeController;
     public HeadHandler headController;
@@ -70,6 +54,7 @@ public class Face_Synchronizer : MonoBehaviour, TcpReceiver.FaceDataHandler
     {
         InitPacketResolveInfo();
         this.GetComponent<TcpReceiver>().faceDataHandler = this;
+        this.GetComponent<UdpReceiver>().faceDataHandler = this;
     }
     // Update is called once per frame
     void Update() { }

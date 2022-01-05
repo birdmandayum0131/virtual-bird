@@ -39,7 +39,10 @@
      <Compile Include="Assets\Eye_Controller.cs" />
      <Compile Include="Assets\Face_Synchronizer.cs" />
      <Compile Include="Assets\Head_Controller.cs" />
+     <Compile Include="Assets\Interfaces.cs" />
+     <Compile Include="Assets\Structures.cs" />
      <Compile Include="Assets\TcpReceiver.cs" />
+     <Compile Include="Assets\UdpReceiver.cs" />
      <None Include="Assets\Shaders\SpookyStandardShader.shader" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.33f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
