@@ -87,16 +87,28 @@ You can change default config to fit your environments in **config/config.py**
   |:------:|:-----:|:----:|:-----:|:------:|:-----:|:----:|:-----:|:----------:|
   |FX-8320E|GTX 960| 8 Gb | 2 Gb  | 3.8.12 | 10.2  |8.3.0 |1.10.1 |2019.4.33f1 |
 ## Acknowledgement
-  A part of the code is refer to following repositories. You can check their project for more related knowledge.  
-  Thanks for their open resources!
-  - [1adrianb/face-alignment][FAN]
-  - [antoinelame/GazeTracking][]
-  - [kwea123/VTuber_Unity][]
-  - [yinguobing/head-pose-estimation][]
-  - [dbolya/yolact](https://github.com/dbolya/yolact)
+  These repositories helps me in this project, You can check their repo for more related knowledge.  
+  Thanks for their open resources!  
+  
+[![BSD-3-img]][BSD-3-link]
+---
+> [1adrianb/face-alignment][FAN]
+
+[![MIT-img]][MIT-link]
+---
+> [antoinelame/GazeTracking][]  
+> [kwea123/VTuber_Unity][]  
+> [yinguobing/head-pose-estimation][]  
+> [dbolya/yolact](https://github.com/dbolya/yolact)  
 
 [FAN]:                              https://github.com/1adrianb/face-alignment                                                        "1adrianb/face-alignment"
 [antoinelame/GazeTracking]:         https://github.com/antoinelame/GazeTracking                                                       "antoinelame/GazeTracking"
 [kwea123/VTuber_Unity]:             https://github.com/kwea123/VTuber_Unity                                                           "kwea123/VTuber_Unity"
 [yinguobing/head-pose-estimation]:  https://github.com/yinguobing/head-pose-estimation                                                "yinguobing/head-pose-estimation"
 [Ghost]:                            https://assetstore.unity.com/packages/templates/tutorials/3d-beginner-tutorial-resources-143848   "Unity Technologies/Ghost"
+
+[BSD-3-img]:                        https://img.shields.io/badge/License-BSD_3--Clause-blue.svg
+[BSD-3-link]:                       https://opensource.org/licenses/BSD-3-Clause
+[MIT-img]:                          https://img.shields.io/badge/License-MIT-yellow.svg
+[MIT-link]:                         https://opensource.org/licenses/MIT
+
