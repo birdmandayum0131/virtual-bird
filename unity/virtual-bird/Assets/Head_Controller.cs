@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Head_Controller : MonoBehaviour, HeadHandler
+public class Head_Controller : MonoBehaviour, IHeadHandler
 {
     private GameObject body;
     private Quaternion bodyRotation;
@@ -12,6 +12,8 @@ public class Head_Controller : MonoBehaviour, HeadHandler
     public float angle;
     private GameObject head;
     public float followSpeed = 180f;
+    public float smoothAngle = 2f;
+    public float smoothDecay = 10f;
     void Start()
     {
         LinkObjects();
@@ -45,7 +47,9 @@ public class Head_Controller : MonoBehaviour, HeadHandler
         this.angle = Quaternion.Angle(this.headRotation, this.targetRotation);
         float maxAngle = Time.deltaTime * this.followSpeed;
         this.bodyRotation = Quaternion.Euler(this.headRotation.eulerAngles);
-        if (this.angle < maxAngle)
+        if (this.angle < this.smoothAngle)
+            this.headRotation = Quaternion.RotateTowards(this.headRotation, this.headRotation, this.angle / this.smoothDecay);
+        else if (this.angle < maxAngle)
             this.headRotation = Quaternion.Euler(this.targetRotation.eulerAngles);
         else
             this.headRotation = Quaternion.RotateTowards(this.headRotation, this.targetRotation, maxAngle);

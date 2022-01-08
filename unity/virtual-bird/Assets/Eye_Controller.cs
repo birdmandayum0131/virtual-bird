@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class Eye_Controller : MonoBehaviour, GazeHandler
+public class Eye_Controller : MonoBehaviour, IGazeHandler
 {
     private GameObject target;
     public Vector3 targetPosition;

@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class Face_Synchronizer : MonoBehaviour, FaceDataHandler
+public class Face_Synchronizer : MonoBehaviour, IFaceDataHandler
 {
 
     private EyeGaze _eyeGaze;
@@ -36,8 +36,8 @@ public class Face_Synchronizer : MonoBehaviour, FaceDataHandler
 
 
 
-    public GazeHandler eyeController;
-    public HeadHandler headController;
+    public IGazeHandler eyeController;
+    public IHeadHandler headController;
 
 
 

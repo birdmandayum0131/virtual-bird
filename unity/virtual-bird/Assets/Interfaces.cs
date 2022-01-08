@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
-public interface FaceDataHandler
+public interface IFaceDataHandler
 {
     void parseFaceData(string receiveData);
 }
-public interface GazeHandler
+public interface IGazeHandler
 {
     void LookAt(EyeGaze gaze);
 }
-public interface HeadHandler
+public interface IHeadHandler
 {
     void RotateTo(Quaternion rotation);
 }

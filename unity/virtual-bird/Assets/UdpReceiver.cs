@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class UdpReceiver : MonoBehaviour
 {
-    public FaceDataHandler faceDataHandler;
+    public IFaceDataHandler faceDataHandler;
     private static UdpReceiver _singleton;
     public static UdpReceiver Singleton
     {

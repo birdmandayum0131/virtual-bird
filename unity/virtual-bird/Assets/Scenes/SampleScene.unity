@@ -134,7 +134,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 57650279}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc4b2ce9117dbe3498b4c90b2dcf2bbc, type: 3}
   m_Name: 
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 57650279}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 190034c30f209c947beea9211f4ceced, type: 3}
   m_Name: 
@@ -204,6 +204,8 @@ MonoBehaviour:
   body_stable: {x: 0, y: 0, z: -0.70710677, w: 0.70710677}
   angle: 0
   followSpeed: 180
+  smoothAngle: 2
+  smoothDecay: 10
 --- !u!1 &371259074
 GameObject:
   m_ObjectHideFlags: 0

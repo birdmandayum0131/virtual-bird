@@ -4,7 +4,7 @@ using System;
 using System.Text;
 public class TcpReceiver : MonoBehaviour
 {
-    public FaceDataHandler faceDataHandler;
+    public IFaceDataHandler faceDataHandler;
     private static TcpReceiver _singleton;
     public static TcpReceiver Singleton
     {
