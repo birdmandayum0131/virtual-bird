@@ -1,7 +1,6 @@
 from ..Abstract import LandmarksDetector, HeadPoseEstimator
 from .Eyes import Eyes
-from ..utils.Camera import euler2quaternion
-from math import pi, atan2, asin
+from .Mouth import Mouth
 import numpy as np
 import cv2
 
@@ -19,6 +18,7 @@ class Face(object):
         self._translation = None
         self._gaze = None
         self._eyes = None
+        self._mouth = None
         self._center = None
 
     @property
@@ -48,6 +48,12 @@ class Face(object):
         if self._eyes is None:
             self._eyes = Eyes(self.image, self.landmarks)
         return self._eyes
+    
+    @property
+    def mouth(self):
+        if self._mouth is None:
+            self._mouth = Mouth(self.image, self.landmarks)
+        return self._mouth
 
     @property
     def rotation(self):
@@ -81,6 +87,8 @@ class Face(object):
             self._detect_info = dict()
             self._detect_info.update(self.eyes.gaze)
             self._detect_info.update(self._headRotation())
+            self._detect_info.update({'mouth':self.mouth.size})
+            print(self._detect_info)
         return self._detect_info
 
     # not used temporarily

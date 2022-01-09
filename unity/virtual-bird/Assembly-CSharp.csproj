@@ -43,7 +43,9 @@
      <Compile Include="Assets\Structures.cs" />
      <Compile Include="Assets\TcpReceiver.cs" />
      <Compile Include="Assets\UdpReceiver.cs" />
+     <None Include="Assets\Shaders\ToonShader.shader" />
      <None Include="Assets\Shaders\SpookyStandardShader.shader" />
+     <None Include="Assets\Shaders\PlaneFog.shader" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.33f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -226,6 +228,15 @@
     </Reference>
     <Reference Include="UnityEditor">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.33f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.Tracker">
+        <HintPath>G:\GitHub\virtual-bird\unity\virtual-bird\Library\PackageCache\com.unity.analytics@3.3.5\Unity.Analytics.Tracker.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.StandardEvents">
+        <HintPath>G:\GitHub\virtual-bird\unity\virtual-bird\Library\PackageCache\com.unity.analytics@3.3.5\AnalyticsStandardEvents\Unity.Analytics.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.Editor">
+        <HintPath>G:\GitHub\virtual-bird\unity\virtual-bird\Library\PackageCache\com.unity.analytics@3.3.5\Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2019.4.33f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
@@ -601,6 +612,15 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
         <HintPath>G:\GitHub\virtual-bird\unity\virtual-bird\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Sprite.Editor">
+        <HintPath>G:\GitHub\virtual-bird\unity\virtual-bird\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Tilemap.Editor">
+        <HintPath>G:\GitHub\virtual-bird\unity\virtual-bird\Library\ScriptAssemblies\Unity.2D.Tilemap.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.DataPrivacy">
+        <HintPath>G:\GitHub\virtual-bird\unity\virtual-bird\Library\ScriptAssemblies\Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
