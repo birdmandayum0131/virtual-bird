@@ -44,7 +44,8 @@ python demo.py
 If the camera window show sucessfully,  
 you can use `l` `h` `a` commands to test **landmarks**、**head pose** and **head axis** features,  
 and `q` to exist the program.  
-  
+
+You can change default config to fit your environments in **config/config.py**  
   
 If everything works normally, follow these steps to demo on unity.
 1. create a unity project and add one of following supported 3D model prefab in your scene.  
@@ -56,8 +57,7 @@ If everything works normally, follow these steps to demo on unity.
 
 If all done, play the sample scene.  (Sorry I didn't export it to .exe file now.🐱‍🚀)  
 
-  
-You can change default config to fit your environments in **config/config.py**  
+**You can also download the unity sample project [here](https://drive.google.com/file/d/11hIrosaiPwaic4BFj-0HTqrPlZCMrWy7/view?usp=sharing) to test the demo.**
 
 ## Timeline
   - support Dlib Face/Landmarks Detector `2022/01/03`
