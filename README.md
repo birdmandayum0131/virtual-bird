@@ -46,9 +46,16 @@ you can use `l` `h` `a` commands to test **landmarks**、**head pose** and **hea
 and `q` to exist the program.  
   
   
-If everything works normally, open the unity project in **unity/virtual-bird** folder with unity editor,  
-and play the sample scene.  (Sorry I didn't export it to .exe file now.🐱‍🚀)  
-  
+If everything works normally, follow these steps to demo on unity.
+1. create a unity project and add one of following supported 3D model prefab in your scene.  
+2. copy the scripts in **unity-scripts** folder to your unity project in Unity Editor.
+3. add these scripts as components to your 3D model prefab.
+    - Tcp/Udp Receiver (choose one)
+    - Face Synchronizer
+    - All scripts in the folder which correspond to your prefab
+
+If all done, play the sample scene.  (Sorry I didn't export it to .exe file now.🐱‍🚀)  
+
   
 You can change default config to fit your environments in **config/config.py**  
 
