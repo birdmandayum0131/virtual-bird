@@ -24,7 +24,7 @@ def main():
         if len(face_list) > 0:
             first_face = face_list[0]
             visualizer.face = first_face
-        frame = visualizer.getRenderImage()
+        frame = visualizer.getDetectImage()
         cv2.imshow('frame', frame)
         action = cv2.waitKey(1) & 0xFF
         if action == ord('q'):

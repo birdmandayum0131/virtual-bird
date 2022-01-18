@@ -20,6 +20,8 @@ class Face(object):
         self._eyes = None
         self._mouth = None
         self._center = None
+        self._front_landmarks = None
+        self._invCamMtx = np.linalg.inv(headposeEstimator.camera_matrix)
 
     @property
     def image(self):
@@ -31,6 +33,12 @@ class Face(object):
             self._landmarks = self._landmarks_detector.detect_landmarks_from_face(
                 self._img, self._bbox)
         return self._landmarks
+
+    @property
+    def front_landmarks(self):
+        if self._front_landmarks is None:
+            self._front_landmarks = self._estimate_front_landmarks()
+        return self._front_landmarks
 
     @property
     def bbox(self):
@@ -78,8 +86,8 @@ class Face(object):
         return self._headposeEstimator
 
     def _headRotation(self):
-        pitch, yaw, roll = cv2.decomposeProjectionMatrix(
-            cv2.hconcat((self.rotation, self.translation)))[6]
+        #pitch, yaw, roll = cv2.decomposeProjectionMatrix(cv2.hconcat((self.rotation, self.translation)))[6]
+        pitch, yaw, roll = cv2.RQDecomp3x3(self.rotation)[0]
         return {"head": "(%.3f, %.3f, %.3f, %s)" % (roll, pitch, yaw, str(self.translation[2][0] < 0))}
 
     def get_all_detect_info(self):
@@ -88,22 +96,27 @@ class Face(object):
             self._detect_info.update(self.eyes.gaze)
             self._detect_info.update(self._headRotation())
             self._detect_info.update({'mouth':self.mouth.size})
-            print(self._detect_info)
         return self._detect_info
 
-    # not used temporarily
-    # now handle this problem in unity
+    def _estimate_front_landmarks(self):
+        P = self.headPoseEstimator.camera_matrix
+        depth = self.rotation.dot(self.headPoseEstimator.static_landmarks.T) + self.translation
+        depth = P.dot(depth).T   #(68,3)
+        depth = depth[:,2:3] #(68,1)
+        front_lmks = cv2.undistortPoints(np.expand_dims(self.landmarks, axis=0), P, self.headPoseEstimator.distance_distortion, None, P)
+        front_lmks = np.concatenate((front_lmks.squeeze(), np.ones((self.landmarks.shape[0],1))), axis=1)
+        front_lmks *= depth
+        front_lmks = self._invCamMtx.dot(front_lmks.T)
+        front_lmks -= self.translation
+        front_lmks = np.linalg.inv(self.rotation).dot(front_lmks).T
+        return front_lmks
+    
+    '''
+    #deprecated
     def _fixDirectionZinverse(self, rotation, translation):
-        '''
-        #deprecated
-
-        this function use simple/rough conditional expression to determine whether to inverse to symmetric the z axis
 
         sometimes solvePnP will wrong predict the rotation
         because of the 3D to 2D projection(3D point symmetrical to your screen will be project to same 2D point)
         these codes doesn't perfectly make sense(cuz of my space knowledgement)
         will make it better in future
-        '''
-        _r, _ = cv2.Rodrigues(rotation)
-        _t = translation.copy()
-        return _r, _t
+    '''

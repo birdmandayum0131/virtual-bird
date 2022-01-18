@@ -11,6 +11,15 @@ class OpenCVHeadPoseEstimator(HeadPoseEstimator):
         self._frame_shape = frame_shape
         self._camera_matrix = None
         self._distance_distortion = None
+        '''
+        These two init vector is critical for solvePnP.
+        If you didn't give it a correct init direction.
+        solvePnP will solve the pose unstably between two ambiguous case(in camera perspective)
+        and you will get two very different value(usually normal and flipped) bouncing
+        '''
+        self.init_front_rvec = np.asarray([[0.0,0.0,0.0]])
+        self.init_front_tvec = np.asarray([[0.0],[0.0],[1000.0]])
+
         if intrinsic_path is not None:
             self._camera_matrix, self._distance_distortion = load_camera_intrinsic(
                 intrinsic_path)
@@ -47,6 +56,8 @@ class OpenCVHeadPoseEstimator(HeadPoseEstimator):
 
     # Override
     def head_pose_from_68_landmarks(self, landmarks):
-        _, rvec, tvec = cv2.solvePnP(
-            self._static_facial_landmarks, landmarks, self.camera_matrix, self.distance_distortion)
+        if self.init_front_rvec is None or self.init_front_tvec is None:
+            _, rvec, tvec = cv2.solvePnP(self._static_facial_landmarks, landmarks, self.camera_matrix, self.distance_distortion)
+        else:
+            _, rvec, tvec = cv2.solvePnP(self._static_facial_landmarks, landmarks, self.camera_matrix, self.distance_distortion, self.init_front_rvec, self.init_front_tvec, useExtrinsicGuess=True)
         return (rvec, tvec)

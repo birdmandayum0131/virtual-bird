@@ -14,6 +14,7 @@ class Visualizer(object):
         self._show_axis = False
         self._show_face_box = False
         self._show_fps = True
+        self._show_emotion = False
         self._fps = 0
         self._fps_interval = deque(maxlen=10)
         self._start_time = time.time()
@@ -76,10 +77,28 @@ class Visualizer(object):
     def show_fps(self, value):
         self._show_fps = value
 
-    def getRenderImage(self):
+    @property
+    def show_emotion(self):
+        return self._show_emotion
+
+    @show_emotion.setter
+    def show_emotion(self, value):
+        self._show_emotion = value
+        if not self._show_emotion:
+            cv2.destroyWindow('emotion')
+        
+    def show(self):
+        frame = self.getDetectImage()
+        emotion = self.getEmotionImage()
+        cv2.imshow('frame', frame)
+        if self.show_emotion:
+            cv2.imshow('emotion', emotion)
+    
+    def getDetectImage(self):
         img = self.image.copy()
+        self._update_fps()
         if self.face is not None:
-            if self._show_face_box:
+            if self.show_face_box:
                 img = self._draw_face_box(img)
             if self.show_landmarks:
                 img = self._landmark_on_frame(img)
@@ -91,14 +110,25 @@ class Visualizer(object):
             img = self._draw_fps(img)
         return img
 
+    def getEmotionImage(self):
+        img = np.zeros(self.image.shape, dtype=np.uint8)
+        if self.face is not None:
+            landmarks = self.face.front_landmarks
+            landmarks[:, 0] = landmarks[:, 0] - np.mean(landmarks[:, 0]) + self.image.shape[1]/2
+            landmarks[:, 1] = landmarks[:, 1] - np.mean(landmarks[:, 1]) + self.image.shape[0]/2
+            img = self._landmark_on_frame(img, landmarks)
+        return img
+
     def _draw_face_box(self, frame, color=(160,202,181), thickness=2):
         cpyFrame = frame.copy()
         x1, y1, x2, y2 = self.face.bbox[:4]
         cv2.rectangle(cpyFrame, (int(x1), int(y1)), (int(x2), int(y2)), color, thickness)
         return cpyFrame
     
-    def _landmark_on_frame(self, frame, color=(255, 255, 255), thickness=1):
-        return landmark_on_frame(frame, self.face.landmarks, color, thickness)
+    def _landmark_on_frame(self, frame, landmarks=None, color=(255, 255, 255), thickness=1):
+        if landmarks is None:
+            landmarks = self.face.landmarks
+        return landmark_on_frame(frame, landmarks, color, thickness)
     
     def _draw_headpose_box(self, frame, thickness=2):
         cpyFrame = frame.copy()
@@ -159,17 +189,18 @@ class Visualizer(object):
     
     def _draw_fps(self, frame):
         cpyFrame = frame.copy()
-        self._end_time = time.time()
-        self._fps_interval.append(self._end_time - self._start_time)
-        self._start_time = self._end_time
-        self._fps = 1 / np.mean(self._fps_interval)
         text = "FPS:%.1f"%(self._fps)
         textsize, _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_PLAIN, 1, 2)
         text_w, text_h = textsize
         cv2.rectangle(cpyFrame, (0,0), (text_w+10, text_h+10), (119, 66, 141), -1)
         cv2.putText(cpyFrame, "FPS:%.1f"%(self._fps), (5, 5 + text_h + 2 - 1), cv2.FONT_HERSHEY_PLAIN, fontScale=1, thickness=2, color=(255, 255, 255))
         return cpyFrame
-        
+
+    def _update_fps(self):
+        self._end_time = time.time()
+        self._fps_interval.append(self._end_time - self._start_time)
+        self._start_time = self._end_time
+        self._fps = 1 / np.mean(self._fps_interval)
 
 
 def landmark_on_frame(frame, landmarks, color=(255, 255, 255), thickness=1):

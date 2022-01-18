@@ -31,8 +31,7 @@ def main():
             dets_dict = first_face.get_all_detect_info()
             unitySender.transportFaceData(dets_dict)
             visualizer.face = first_face
-        frame = visualizer.getRenderImage()
-        cv2.imshow('frame', frame)
+        visualizer.show()
         action = cv2.waitKey(1) & 0xFF
         if action == ord('q'):
             faceTracker.stop()
@@ -49,6 +48,9 @@ def main():
         elif action == ord('a'):
             visualizer.show_axis = not visualizer.show_axis
             print("show head axis : "+str(visualizer.show_axis))
+        elif action == ord('e'):
+            visualizer.show_emotion = not visualizer.show_emotion
+            print("show emotion : "+str(visualizer.show_emotion))
     
     unitySender.stop()
     cv2.destroyAllWindows()

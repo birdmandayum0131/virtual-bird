@@ -6,7 +6,7 @@ camera matrix: !!opencv-matrix
    dt: d
    data: [ 4.0736435848294622e+02, 0., 1.7138905408814983e+02, 0.,
        4.0817693760115810e+02, 1.1399350291587481e+02, 0., 0.,
-       5.0000000000000000e-01 ]
+       1. ]
 distance distortion: !!opencv-matrix
    rows: 1
    cols: 5
