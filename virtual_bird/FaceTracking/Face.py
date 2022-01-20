@@ -7,6 +7,16 @@ import cv2
 
 class Face(object):
 
+    LANDMARKS_INDEX = { 'contour':list(range(0,17)), 
+                        'left_eyebrow':list(range(17,22)), 
+                        'right_eyebrow':list(range(22,27)),
+                        'nasal_bridge':list(range(27,31)), 
+                        'sinuses':list(range(31,36)), 
+                        'left_eye':list(range(36,42)),
+                        'right_eye':list(range(42,48)),
+                        'mouth_outer':list(range(48,60)),
+                        'mouth_inner':list(range(60,68))    }
+
     def __init__(self, img, bbox, landmarks_detector: LandmarksDetector, headposeEstimator: HeadPoseEstimator):
         self._img = img
         self._bbox = bbox

@@ -1,7 +1,9 @@
+from cmath import isclose
 import cv2
 import numpy as np
 import time
 from collections import deque
+from ..FaceTracking.Face import Face
 
 
 
@@ -125,7 +127,7 @@ class Visualizer(object):
         cv2.rectangle(cpyFrame, (int(x1), int(y1)), (int(x2), int(y2)), color, thickness)
         return cpyFrame
     
-    def _landmark_on_frame(self, frame, landmarks=None, color=(255, 255, 255), thickness=1):
+    def _landmark_on_frame(self, frame, landmarks=None, color=(138, 60, 224), thickness=1):
         if landmarks is None:
             landmarks = self.face.landmarks
         return landmark_on_frame(frame, landmarks, color, thickness)
@@ -205,7 +207,10 @@ class Visualizer(object):
 
 def landmark_on_frame(frame, landmarks, color=(255, 255, 255), thickness=1):
     cpyFrame = frame.copy()
-    for mark in landmarks:
-        cv2.circle(cpyFrame, (int(mark[0]), int(
-            mark[1])), thickness, color, -1, cv2.LINE_AA)
+    for feature in Face.LANDMARKS_INDEX:
+        idx = Face.LANDMARKS_INDEX[feature]
+        lineClosed = False
+        if feature in ('left_eye', 'right_eye', 'mouth_outer', 'mouth_inner'):
+            lineClosed = True
+        cv2.polylines(cpyFrame, [landmarks[idx,:2].astype(np.int32)], isClosed=lineClosed, color=color, thickness=thickness, lineType=cv2.LINE_AA)
     return cpyFrame
